@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.8)
 project(norlab_icp_mapper_ros)
 
 set(CMAKE_BUILD_TYPE "Release")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
@@ -15,6 +16,8 @@ find_package(libpointmatcher_ros REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(libpointmatcher REQUIRED)
 find_package(norlab_icp_mapper REQUIRED)
+find_package(libnabo REQUIRED)
+find_package(OpenMP REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
     "srv/SaveTrajectory.srv"
@@ -41,6 +44,7 @@ ament_target_dependencies(mapper_node
 )
 target_link_libraries(mapper_node
     ${norlab_icp_mapper_LIBRARIES}
+    libnabo::nabo
 )
 
 rosidl_get_typesupport_target(cpp_typesupport_target ${PROJECT_NAME} "rosidl_typesupport_cpp")
